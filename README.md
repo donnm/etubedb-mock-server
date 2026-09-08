@@ -92,7 +92,9 @@ logic for the exact conditions.
 ## Files
 
 - `mock_etubedb.py` - the server (`CERT_PEM` / `KEY_PEM` embedded)
-- `cert.pem`, `key.pem` - generated on first run (also embedded)
+- `cert.pem`, `key.pem` - written transiently at startup for the TLS
+  context and (on Windows) the root-store import, then deleted again once
+  the server is running
 
 Requires Python 3.7+. The keyboard handling uses raw ANSI terminal codes
 (no curses dependency).

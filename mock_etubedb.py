@@ -279,6 +279,19 @@ def bootstrap_cert(certfile):
         say(r.stderr.strip()[:400])
 
 
+def remove_pems():
+    removed = []
+    for p in ("cert.pem", "key.pem"):
+        if os.path.exists(p):
+            try:
+                os.remove(p)
+                removed.append(p)
+            except Exception:
+                pass
+    if removed:
+        say("[+] cleaned up %s" % ", ".join(removed))
+
+
 # ---- passthru backend ----
 def resolve_real_ip():
     global REAL_IP
@@ -563,6 +576,8 @@ def main():
     except OSError as e:
         say("[!] cannot bind %s:%s - %s" % (a.host, a.port, e))
         sys.exit(1)
+
+    remove_pems()
 
     say("[*] mock etubedb on https://%s:%s (mode: %s)" % (a.host, a.port, MODE))
     t = threading.Thread(target=read_keys, args=(httpd,), daemon=True)
